@@ -1,0 +1,18 @@
+{
+  "name": "agentics",
+  "owner": { "name": "Bobby" },
+  "description": "Modular agentics: skills, subagents, hooks, and reusable instructions for Claude Code",
+  "metadata": { "pluginRoot": "./plugins" },
+  "plugins": [
+    {
+      "name": "buyers-guide",
+      "source": "./plugins/buyers-guide",
+      "description": "Skill: create comprehensive, research-backed buyer's guides for any product category"
+    },
+    {
+      "name": "declarative-prompt",
+      "source": "./plugins/declarative-prompt",
+      "description": "Skill: scaffold declarative, outcome-based prompts for AI agents"
+    }
+  ]
+}

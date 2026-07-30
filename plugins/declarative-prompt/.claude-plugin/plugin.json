@@ -1,0 +1,5 @@
+{
+  "name": "declarative-prompt",
+  "description": "Scaffold declarative, outcome-based prompts for AI agents from a structured template",
+  "version": "0.1.0"
+}
