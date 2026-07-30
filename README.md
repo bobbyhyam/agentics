@@ -40,3 +40,7 @@ Snippets are always-on instruction blocks for CLAUDE.md / AGENTS.md. They aren't
 ```
 
 No install step, no version in the path. New snippet content arrives with `/plugin marketplace update agentics` (or marketplace auto-update, if enabled). Importing a file from outside the project triggers a one-time approval prompt per project — that's expected.
+
+## License
+
+MIT

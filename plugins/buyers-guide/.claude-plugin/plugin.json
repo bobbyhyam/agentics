@@ -1,5 +1,6 @@
 {
   "name": "buyers-guide",
   "description": "Create comprehensive, research-backed buyer's guides for any product category",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "license": "MIT"
 }
