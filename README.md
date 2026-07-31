@@ -7,7 +7,7 @@ Modular agentics for Claude Code: skills, subagents, hooks, and reusable instruc
 Add this marketplace once:
 
 ```
-/plugin marketplace add <owner>/agentics
+/plugin marketplace add bobbyhyam/agentics
 ```
 
 Then install any single component:
