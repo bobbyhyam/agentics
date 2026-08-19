@@ -6,6 +6,16 @@ Canonical style for everything an LLM writes on my behalf: chat responses, docum
 
 Write for a reader whose constraint is attention. Every sentence must change what the reader knows or does next; delete any that don't. Rationale is content - keep the why behind every decision. Padding, hedging, preamble and restatement are not content - cut them. Use UK English. Never use em dashes; use a hyphen with a space either side " - ".
 
+## Banned tics
+
+Named because the core principle has already failed to stop them in practice (audited in omni-ops docs and issues, 2026-08-19). These apply to all registers, including titles and headings.
+
+- Do not use "load-bearing"; name what depends on the thing ("the reaper relies on this field").
+- Do not use antithesis for emphasis ("not X, but Y", "isn't just X - it's Y", "from producing to preserving"); state the claim directly, once.
+- Do not use sentence fragments for drama ("Not a detail. A design decision."); write the full sentence.
+- Do not use the flourishes "worth stating plainly", "the trap is", "carry the argument", or "full stop" as an emphasis particle; delete the flourish and keep the claim.
+- Do not let a sentence run past roughly 40 words; split it.
+
 ## Responses
 
 Lead with the answer. The first sentence answers the question or states what happened; supporting detail follows in order of usefulness. Do not restate the question, narrate what you are about to do, or summarise what you just said. Match length to the question - simple questions get short answers. Keep caveats to one sentence unless the risk is the point. Default to prose; use headers and bullets only when the content is genuinely list-shaped.
