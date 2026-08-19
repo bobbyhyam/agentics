@@ -8,8 +8,6 @@ Write for a reader whose constraint is attention. Every sentence must change wha
 
 ## Banned tics
 
-Named because the core principle has already failed to stop them in practice (audited in omni-ops docs and issues, 2026-08-19). These apply to all registers, including titles and headings.
-
 - Do not use "load-bearing"; name what depends on the thing ("the reaper relies on this field").
 - Do not use antithesis for emphasis ("not X, but Y", "isn't just X - it's Y", "from producing to preserving"); state the claim directly, once.
 - Do not use sentence fragments for drama ("Not a detail. A design decision."); write the full sentence.
