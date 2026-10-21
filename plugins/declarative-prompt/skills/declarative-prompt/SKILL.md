@@ -49,10 +49,10 @@ so section wording stays consistent.
    user supplies that kind of content, suggest moving it there and leave it
    out of the prompt.
 
-6. **Deliver.** Output the completed prompt as a markdown file the user can
-   copy or save, with all guidance comments from the template removed and
-   unused sections deleted. Offer one round of tightening: read the result
-   back looking for contradictions between sections (a constraint that
+6. **Deliver.** Present the completed prompt with all guidance comments from
+   the template removed and unused sections deleted. Offer one round of
+   tightening: read the result back looking for contradictions between
+   sections (a constraint that
    conflicts with the goal, a done-criterion the non-goals rule out) and fix
    them - contradictory instructions measurably degrade agent performance.
 
