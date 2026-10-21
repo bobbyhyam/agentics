@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<title>{{TITLE}} - Buyer's guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75,700;75,900;100,400;100,600&display=swap" rel="stylesheet">
+<style>
+  /* ---- Tokens. Set the three accents from the palette table in references/style-guide.md.
+          Everything else is fixed. The variable names stay the same whatever palette is used. ---- */
+  :root{
+    --bg:#f6f6f6; --card:#ffffff; --ink:#111111; --grey:#666a70; --line:#e2e3e6;
+    --cobalt:#1f3fe0;  /* primary   */
+    --tang:#ff6b1a;    /* secondary */
+    --lemon:#f2e84b;   /* highlight */
+    --good:#1a7f3c; --bad:#c0392b;
+  }
+  *{box-sizing:border-box}
+  /* html background + color-scheme are required: the mobile viewer forces dark mode otherwise */
+  html{background:var(--bg);color-scheme:light only}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-size:16px;line-height:1.5}
+  .page{max-width:760px;margin:0 auto;background:var(--bg);color:var(--ink)}
+
+  /* ---- Cover ---- */
+  .cover{background:var(--cobalt);color:#fff;padding:30px 22px 26px;position:relative;overflow:hidden}
+  .cover:after{content:"";position:absolute;right:-60px;top:-60px;width:260px;height:260px;border-radius:50%;background:var(--tang);opacity:.9}
+  .cover .tag{display:inline-block;background:var(--lemon);color:var(--ink);font-stretch:75%;font-weight:900;padding:4px 10px;font-size:14px;position:relative;z-index:1}
+  h1{font-stretch:75%;font-weight:900;font-size:52px;line-height:.95;margin:16px 0 14px;text-transform:uppercase;position:relative;z-index:1;max-width:520px}
+  .cover p{margin:0;font-size:18px;max-width:480px;position:relative;z-index:1}
+  .meta{display:flex;flex-wrap:wrap;gap:6px 14px;padding:12px 22px;font-size:13px;color:var(--grey);background:var(--card);border-bottom:1px solid var(--line)}
+  .meta b{color:var(--ink)}
+
+  /* ---- Section chrome ---- */
+  section{padding:24px 22px}
+  h2{font-stretch:75%;font-weight:900;font-size:30px;text-transform:uppercase;margin:0 0 14px;line-height:1;padding-left:12px;border-left:6px solid var(--tang)}
+  h3{font-stretch:75%;font-weight:900;font-size:20px;margin:18px 0 6px}
+  p{margin:0 0 12px}
+  a{color:var(--cobalt)}
+  .tldr{background:var(--ink);color:#fff;padding:18px 20px;font-size:18px;line-height:1.4}
+  .tldr b{color:var(--lemon)}
+
+  /* ---- Landscape tiles ---- */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .tile{background:var(--card);padding:14px;border-bottom:4px solid var(--cobalt)}
+  .tile b{display:block;font-stretch:75%;font-weight:900;font-size:20px;margin-bottom:4px}
+  .tile.warn{border-color:var(--tang)}
+
+  /* ---- Terms ---- */
+  .term{background:var(--card);padding:12px 14px;margin-bottom:8px;display:grid;grid-template-columns:120px 1fr;gap:12px}
+  .term b{font-stretch:75%;font-weight:900;font-size:18px}
+
+  /* ---- Figures: AI illustration or inline SVG ---- */
+  figure{margin:14px 0;background:var(--card);padding:0 0 10px}
+  figure img,figure svg{display:block;width:100%;height:auto}
+  figcaption{padding:10px 14px 0;font-size:14px;color:var(--grey)}
+  figcaption b{color:var(--ink);font-stretch:75%;font-weight:900;font-size:15px;margin-right:6px}
+
+  /* ---- Score bars ---- */
+  .bars{background:var(--card);padding:16px}
+  .bar{margin-bottom:12px}
+  .bar .l{display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px}
+  .bar .l b{font-weight:600}
+  .bar .t{height:12px;background:var(--line)}
+  .bar .f{height:100%;background:var(--cobalt)}
+  .bar .f.hi{background:var(--tang)}
+
+  /* ---- Product card ---- */
+  .card{background:var(--card);margin-top:14px;display:grid;grid-template-columns:86px 1fr}
+  .card .sc{background:var(--cobalt);color:#fff;display:grid;place-items:center;font-stretch:75%;font-weight:900;font-size:36px}
+  .card .sc.top{background:var(--tang)}
+  .card .in{padding:14px 16px}
+  .card .in b{font-stretch:75%;font-weight:900;font-size:22px;display:block}
+  .card .in .pr{color:var(--grey);font-size:14px;margin-bottom:8px}
+  .card .photo{grid-column:1/-1;background:#fff;border-bottom:1px solid var(--line);display:grid;place-items:center;padding:14px;max-height:260px;overflow:hidden}
+  .card .photo img{max-width:100%;max-height:230px;object-fit:contain}
+  .card .photo.missing{background:var(--bg);color:var(--grey);font-size:14px;min-height:120px}
+  .card .photo.missing b{font-stretch:75%;font-weight:900;color:var(--cobalt);font-size:26px;margin-right:8px}
+  .specs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .specs span{background:var(--bg);padding:3px 8px;font-size:13px;font-weight:600}
+  .pm{font-size:14px;margin-top:8px}
+  .pm .p{color:var(--good)}.pm .m{color:var(--bad)}
+  .award{display:inline-block;background:var(--lemon);font-stretch:75%;font-weight:900;padding:3px 10px;font-size:13px;margin-top:6px}
+  .credit{font-size:11px;color:var(--grey);padding:0 16px 10px}
+
+  /* ---- Comparison table ---- */
+  .tablewrap{overflow-x:auto;background:var(--card)}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;background:var(--ink);color:#fff;padding:8px 10px;font-weight:600;white-space:nowrap}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  td.name{font-stretch:75%;font-weight:900;font-size:16px}
+
+  /* ---- Gotchas ---- */
+  .gotcha{background:var(--card);padding:12px 14px;margin-bottom:8px;border-left:6px solid var(--tang)}
+  .gotcha b{display:block}
+
+  /* ---- Podium ---- */
+  .podium{display:grid;grid-template-columns:1fr;gap:10px}
+  .step{background:var(--card);padding:16px;display:grid;grid-template-columns:1fr auto;align-items:start;gap:10px}
+  .step .role{font-size:13px;font-weight:600;color:var(--cobalt)}
+  .step b{font-stretch:75%;font-weight:900;font-size:22px;display:block}
+  .step .price{font-stretch:75%;font-weight:900;font-size:24px}
+  .step.one{background:var(--cobalt);color:#fff}.step.one .role{color:var(--lemon)}
+
+  /* ---- Outlook ---- */
+  .outlook{background:var(--lemon);padding:20px 22px}
+  .outlook h2{border-color:var(--ink)}
+  .stamp{display:inline-block;border:3px solid var(--ink);padding:6px 14px;font-stretch:75%;font-weight:900;text-transform:uppercase;transform:rotate(-2deg);margin-top:8px}
+
+  /* ---- Sources ---- */
+  .sources{font-size:13px;color:var(--grey)}
+  .sources ol{padding-left:18px;margin:0}
+  .sources li{margin-bottom:4px}
+  .foot{padding:16px 22px;font-size:13px;color:var(--grey)}
+  @media (max-width:520px){h1{font-size:44px}.grid{grid-template-columns:1fr}.term{grid-template-columns:1fr;gap:4px}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- COVER: category tag, uppercase title (max ~6 words), one-sentence standfirst -->
+  <div class="cover">
+    <span class="tag">Buyer's guide</span>
+    <h1>{{TITLE}}</h1>
+    <p>{{STANDFIRST}}</p>
+  </div>
+  <div class="meta"><span><b>Researched</b> {{DATE}}</span><span><b>Sources</b> {{N_SOURCES}}</span><span><b>Prices</b> {{PRICE_BASIS}}</span></div>
+
+  <!-- TLDR: two or three sentences, bold the decisive nouns -->
+  <section>
+    <div class="tldr">{{TLDR}}</div>
+  </section>
+
+  <!-- LANDSCAPE: one tile per subcategory. class="warn" for options the reader should usually avoid -->
+  <section>
+    <h2>Landscape</h2>
+    <div class="grid">
+      <div class="tile"><b>{{TYPE}}</b>{{ONE_LINE}}</div>
+      <div class="tile warn"><b>{{TYPE}}</b>{{ONE_LINE}}</div>
+    </div>
+    <!-- Optional figure: AI illustration explaining the category structure -->
+    <figure>
+      <img src="{{ILLUSTRATION_PATH_OR_URL}}" alt="{{ALT}}">
+      <figcaption><b>{{FIGURE_LABEL}}</b>{{CAPTION}}</figcaption>
+    </figure>
+  </section>
+
+  <!-- TERMS: only terms that change the decision; say why each matters -->
+  <section>
+    <h2>Decode the spec sheet</h2>
+    <div class="term"><b>{{TERM}}</b><span>{{WHAT_IT_MEANS_AND_WHY_IT_MATTERS}}</span></div>
+    <!-- Inline SVG figure for a chart or simple diagram. Use only the palette tokens. -->
+    <figure>
+      <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ALT}}">
+        <!-- ... -->
+      </svg>
+      <figcaption><b>{{FIGURE_LABEL}}</b>{{CAPTION}}</figcaption>
+    </figure>
+  </section>
+
+  <!-- CRITERIA: what to look for, in order of importance -->
+  <section>
+    <h2>What actually matters</h2>
+    <h3>{{CRITERION}}</h3>
+    <p>{{WHAT_GOOD_LOOKS_LIKE_AND_HOW_TO_CHECK}}</p>
+  </section>
+
+  <!-- GOTCHAS -->
+  <section>
+    <h2>Watch out</h2>
+    <div class="gotcha"><b>{{GOTCHA}}</b>{{EXPLANATION}}</div>
+  </section>
+
+  <!-- SCORES + PRODUCT CARDS: score bars first (all products), then a card per product.
+       Top product uses sc.top. Photo block sits above the score/detail row. -->
+  <section>
+    <h2>Scores</h2>
+    <div class="bars">
+      <div class="bar"><div class="l"><b>{{PRODUCT}}</b><span>{{SCORE}}</span></div><div class="t"><div class="f hi" style="width:{{SCORE_PCT}}%"></div></div></div>
+      <div class="bar"><div class="l"><b>{{PRODUCT}}</b><span>{{SCORE}}</span></div><div class="t"><div class="f" style="width:{{SCORE_PCT}}%"></div></div></div>
+    </div>
+
+    <div class="card">
+      <div class="photo"><img src="{{PRODUCT_PHOTO_URL}}" alt="{{PRODUCT}}"></div>
+      <div class="sc top">{{SCORE}}</div>
+      <div class="in">
+        <b>{{PRODUCT}}</b>
+        <div class="pr">{{PRICE_LINE}}</div>
+        <div class="specs"><span>{{SPEC}}</span><span>{{SPEC}}</span></div>
+        <p>{{ASSESSMENT}}</p>
+        <div class="pm"><div class="p">+ {{WHAT_OWNERS_PRAISE}}</div><div class="m">- {{WHAT_OWNERS_COMPLAIN_ABOUT}}</div></div>
+        <span class="award">Best in test</span>
+      </div>
+      <div class="credit">Photo: {{SOURCE_NAME}}</div>
+    </div>
+
+    <!-- Card with no usable photo: use the placeholder block instead -->
+    <div class="card">
+      <div class="photo missing"><b>{{INITIALS}}</b>{{PRODUCT}} - no press image available</div>
+      <div class="sc">{{SCORE}}</div>
+      <div class="in">
+        <b>{{PRODUCT}}</b>
+        <div class="pr">{{PRICE_LINE}}</div>
+        <div class="specs"><span>{{SPEC}}</span></div>
+        <p>{{ASSESSMENT}}</p>
+        <div class="pm"><div class="p">+ {{PRAISE}}</div><div class="m">- {{COMPLAINT}}</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HEAD TO HEAD: spec table, one row per product -->
+  <section>
+    <h2>Head to head</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Model</th><th>{{SPEC_COL}}</th><th>{{SPEC_COL}}</th><th>Price</th><th>Score</th></tr></thead>
+        <tbody>
+          <tr><td class="name">{{PRODUCT}}</td><td>{{VAL}}</td><td>{{VAL}}</td><td>{{PRICE}}</td><td>{{SCORE}}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PODIUM: exactly three picks in this order -->
+  <section>
+    <h2>The podium</h2>
+    <div class="podium">
+      <div class="step one"><div><div class="role">Best overall</div><b>{{PRODUCT}}</b>{{WHY}}</div><div class="price">{{PRICE}}</div></div>
+      <div class="step"><div><div class="role">Best balanced</div><b>{{PRODUCT}}</b>{{WHY_AND_WHAT_YOU_GIVE_UP}}</div><div class="price">{{PRICE}}</div></div>
+      <div class="step"><div><div class="role">Best value</div><b>{{PRODUCT}}</b>{{WHY}}</div><div class="price">{{PRICE}}</div></div>
+    </div>
+  </section>
+
+  <!-- OUTLOOK: upcoming releases, tech shifts, trends, then a stamped verdict -->
+  <section class="outlook">
+    <h2>Buy now or wait?</h2>
+    <p>{{OUTLOOK}}</p>
+    <span class="stamp">{{VERDICT_3_TO_5_WORDS}}</span>
+  </section>
+
+  <!-- SOURCES: every source that shaped a claim, numbered -->
+  <section class="sources">
+    <h2>Sources</h2>
+    <ol>
+      <li><a href="{{URL}}">{{SOURCE_TITLE}}</a> - {{PUBLISHER}}, {{DATE}}</li>
+    </ol>
+  </section>
+
+  <div class="foot">Prices checked {{DATE}}. Scores are the author's synthesis of expert reviews and owner reports, not lab measurements.</div>
+</div>
+</body>
+</html>

@@ -1,129 +1,80 @@
 ---
 name: buyers-guide
-description: "Create comprehensive, research-backed buyer's guides for any product category. Use this skill whenever a user asks for help choosing, comparing, or understanding products in a category - whether they say 'buyer's guide', 'what should I buy', 'help me choose a...', 'compare options for...', 'what's the best...', or any variation of product research and purchasing advice. Trigger for any product category: electronics, appliances, tools, vehicles, home improvement, software, services, or anything else a consumer might need to evaluate and purchase."
+description: "Create comprehensive, research-backed buyer's guides for any product category, delivered as a single self-contained full-colour HTML page in a tech-magazine style with real product photos, AI-generated concept illustrations and inline SVG charts. Use this skill whenever a user asks for help choosing, comparing, or understanding products in a category - whether they say 'buyer's guide', 'what should I buy', 'help me choose a...', 'compare options for...', 'what's the best...', 'is now a good time to buy...', or any variation of product research and purchasing advice. Trigger for any product category: electronics, appliances, tools, vehicles, home improvement, outdoor and garden kit, software, services, or anything else a consumer might need to evaluate and purchase. Trigger even for a casual one-liner like 'need a new drill, thoughts?'."
 ---
 
 # Buyer's Guide Skill
 
-You are creating a comprehensive, well-researched buyer's guide for a product category. The goal is to give the reader everything they need to make a confident, informed purchasing decision - even if they know nothing about the category going in.
+Produce a buyer's guide that gives the reader everything they need to make a confident purchase even if they know nothing about the category, and deliver it as one HTML file that looks like a spread from a glossy technology magazine. The research is the substance; the page is how the reader gets through it without giving up.
 
-## How this skill works
+## Bundled files
 
-The user gives you a product category (e.g. "robot lawnmower", "laptop", "home heating system"). Your job is to research the category thoroughly and produce a detailed markdown guide that covers the full landscape of options, explains the technical concepts a buyer needs to understand, compares specific products, and makes clear recommendations.
+- `assets/template.html` - the page. Copy it, fill it, do not restyle it. Every component the guide needs is already in there with a comment saying what goes in it.
+- `references/style-guide.md` - brand tokens, when to use a photo versus an illustration versus an SVG, how to source photos, the mandatory prompt prefix for generated illustrations, and SVG rules. Read it before adding any visual.
+- `scripts/embed_images.py` - inlines every image as base64 so the finished file is self-contained. Run it last.
 
 ## Process
 
-### 1. Understand the category and scope
+### 1. Scope the category
 
-Before diving into research, think about the category structure. Most product categories break down into types, and those types break down further. For example:
+Most categories are a tree: laptops split into Windows, Mac and Linux, then Windows into ultrabook, gaming, workstation and 2-in-1. Map the tree mentally first. If the category is broad enough that the full landscape would be a very long guide, ask one clarifying question to narrow it. One question, then proceed; the user can widen the scope after seeing the guide.
 
-- Laptops: Windows / Mac / Linux, then within Windows: ultrabooks / gaming / workstation / 2-in-1
-- Home heating: gas boiler / heat pump / electric radiator, then within heat pump: air-source / ground-source
-- Power tools: corded / cordless, then by voltage tier, then by brand ecosystem
+### 2. Research
 
-Map out this tree mentally first. Then ask the user if they want the full landscape or if they'd like to narrow the focus. Some users want the complete picture; others already know they want a specific subcategory and just need help choosing within it.
+Use web search extensively. Expect model naming to be regional and messy (the same TV can carry different names in the UK and the US, and a name can be reused for a different product), so pin each contender to its exact model code before scoring it. Search and treat training knowledge as a starting hypothesis only, because pricing, availability and model line-ups change monthly. Search from several angles:
 
-If the category is broad and would result in an extremely long guide covering many unrelated product types, ask one focused clarifying question to help narrow the scope. Keep it to one question at a time - don't overwhelm with a list of options.
+- "best [category]" plus the current year and next year, for expert roundups
+- "[specific model] review" for depth on each contender
+- "[category] problems" and "[category] issues" for gotchas
+- "[model A] vs [model B]" for head to heads
+- "[category] buying guide" to see which criteria experts weight
+- Reddit and specialist forums for owner sentiment, including how the manufacturer handles complaints
+- "[brand] new model", "[category] upcoming" and trade show coverage (CES, IFA, MWC, Eurobike, Spoga, and the shows relevant to the category) for the outlook section
 
-### 2. Research thoroughly
+Fetch the full article for anything that shapes a recommendation; snippets are not enough to score a product. Keep a running list of sources with URL, publisher and date, because the page ends with a numbered source list and every score needs to be defensible.
 
-Use web search tools extensively. You need current, accurate information - not just what you know from training data. For each product category and subcategory, research:
+### 3. Choose the palette and decide the visuals
 
-- What products are currently on the market
-- Current pricing and availability
-- Recent reviews from reputable sources (specialist publications, not just aggregator sites)
-- User reviews and sentiment from forums, retailer reviews, and communities
-- Recent product launches or announcements
-- Known issues, recalls, or common complaints
+Pick one of the six palettes in `references/style-guide.md` by the character of the category (Cinema for TVs and audio, Field for garden kit, and so on; Circuit when nothing fits). Set its three hex values in the template's `:root` and use the same three values in every illustration prompt and SVG, so the photographs, drawings and page chrome all belong to one issue. The structure, type and layout never change between guides; only these three colours do.
 
-Do multiple searches with different angles. A single search rarely gives you the full picture. Search for things like:
+Before writing, list the concepts that are easier to see than to read, and decide for each whether it is an AI illustration (how something works, what types look like, a scene), an inline SVG (charts, trees, labelled schematics) or nothing. Two or three illustrations and one or two SVGs is typical. Then, for every product that will get a card, find a photograph and a current UK price. One Firecrawl agent job does both for the whole set; the method, the fallback and the rejection rules are in `references/style-guide.md`. Start that job before generating illustrations so it runs while you work.
 
-- "best [product category] 2025 2026" for roundup reviews
-- "[specific product] review" for individual product depth
-- "[product category] problems" or "[product category] issues" for gotchas
-- "[product A] vs [product B]" for head-to-head comparisons
-- "[product category] buying guide" to see what criteria experts emphasise
-- Reddit, forums, and community discussions for real user sentiment
-- "[product category] 2026 2027 upcoming" or "[brand] new model" for upcoming releases and industry direction
-- Trade show coverage (CES, IFA, MWC, etc.) for announced but not yet released products
+Generate illustrations through the `generate-image` skill using the house-style prompt prefix from the style guide, verbatim, so every picture shares the page's palette. Check each result: any colour outside the palette, or a picture that decorates rather than explains, gets one regeneration and then falls back to SVG or nothing.
 
-### 3. Write the guide
+### 4. Build the page
 
-The guide should be a single markdown document with the following structure. Adapt section headings to fit the specific category naturally - the structure below is a framework, not a rigid template.
+Copy `assets/template.html` to `/home/claude/guide/index.html` and save images to `/home/claude/guide/img/`. Fill the sections in this order; the template's comments say what each expects.
 
-#### Document structure
+- **Cover** - category tag, an uppercase title of six words or fewer, a one-sentence standfirst that states the decision the reader faces.
+- **Meta** - research date, source count, price basis (country, currency, whether bare-tool or bundle).
+- **TL;DR** - two or three sentences with the decisive nouns in bold. The reader should be able to stop here.
+- **Landscape** - one tile per subcategory; `warn` tiles for options most readers should skip. An illustration here if the category structure is not obvious.
+- **Decode the spec sheet** - only terms that change the decision, each with what it means and why it matters in plain language. Skip trivia.
+- **What actually matters** - the buying criteria in order of importance, each saying what good looks like and how to check it in a shop or a spec sheet.
+- **Watch out** - hidden costs, misleading claims, common regrets.
+- **Scores and product cards** - score bars for every contender, then a card per product with photo, score, price line, spec chips, a short assessment, what owners praise, what owners complain about, and an award badge for the winner. Include mainstream picks and anything new and gaining momentum.
+- **Head to head** - a spec table, one row per product, columns limited to the specs that differ meaningfully.
+- **The podium** - exactly three picks: best overall, best balanced (say what it gives up against the winner), best value. Each with the reasoning so the reader can judge whether it applies to them.
+- **Buy now or wait** - confirmed upcoming releases, technology shifts, price trends, then a stamped three-to-five-word verdict. Be honest about uncertainty but still give a verdict.
+- **Sources** - numbered, linked, with publisher and date.
 
-**Title and introduction**
-A brief overview of the category and what this guide covers. Set expectations for what the reader will learn.
+Scores are out of 10 to one decimal place and are your synthesis of expert reviews and owner reports. Keep them consistent: a product two points behind another should be visibly worse in the assessment text. Bar width is the score times ten.
 
-**Category landscape**
-Break down the different types/approaches available. Explain each subcategory, what distinguishes it, and who it's best suited for. Go as deep as the tree requires - if a subcategory has meaningful further divisions, cover those too.
+### 5. Embed and deliver
 
-This section should help someone who knows nothing about the category understand what their options are at a high level before getting into specific products.
+Run `python3 scripts/embed_images.py /home/claude/guide/index.html`. It trims transparent and white borders, resizes, inlines every `<img>` as base64 and reports any that failed; swap failed photos for another source or the placeholder block and run it again. Copy the result to `/mnt/user-data/outputs/<category>-buyers-guide.html` and present it with `present_files`.
 
-**Key concepts and terminology**
-Explain the technical terms and concepts that matter for making a buying decision. The reader shouldn't have to Google jargon while reading your guide. Focus on terms that actually affect the buying decision - skip anything that's just trivia.
+In the conversation, give a three or four sentence summary: the three picks, the buy-or-wait verdict, and anything surprising the research turned up. Do not repeat the guide.
 
-For each term, explain what it means in plain language and, importantly, why it matters. Don't just define "SEER rating" - explain that a higher SEER rating means lower energy bills and roughly how much difference it makes.
+## Why the page is built this way
 
-**What to look for (buying criteria)**
-A clear breakdown of the criteria that should drive the purchase decision, in rough order of importance. For each criterion, explain what good looks like, what to watch out for, and how to evaluate it.
-
-This section should feel like advice from a knowledgeable friend - practical, opinionated where appropriate, and focused on what actually matters rather than spec-sheet padding.
-
-**Gotchas and common pitfalls**
-Things that catch buyers out. These might be category-wide (e.g. "most advertised battery life figures are under ideal conditions") or specific to certain subcategories. Include things like hidden costs (installation, accessories, ongoing maintenance), misleading marketing claims, and common regrets from buyers.
-
-**Product comparison**
-This is the meat of the guide. For each relevant subcategory, compare specific products feature by feature. Include:
-
-- **Mainstream/popular products**: the well-known, widely-recommended options
-- **New and trending products**: recently launched or gaining momentum
-- For each product: key specs, pricing, standout features, notable weaknesses
-
-Present comparisons in a way that makes differences easy to spot. Use tables where they help (e.g. for spec comparisons), but supplement with prose that explains the significance of the differences. Raw specs without context ("this one has 16GB RAM and that one has 32GB") are less useful than explained specs ("16GB is adequate for general use but you'll hit limits with video editing or running many applications simultaneously").
-
-**User sentiment**
-For each recommended product, summarise what real users say. Focus on:
-
-- The most common praise - what do people consistently love about it?
-- The most common complaints - what issues come up repeatedly?
-- How the company responds to problems - are they known for good support, or do complaints go unanswered?
-- Any patterns in reliability over time
-
-Source this from user reviews, forums, Reddit, and community discussions. Be specific - "some users report issues" is weak; "multiple users on r/HomeImprovement report the thermostat losing Wi-Fi connection after firmware updates" is useful.
-
-**Recommendations**
-Make three clear recommendations:
-
-1. **Best overall (unlimited budget)**: The best product in the category regardless of price. Explain why it's worth the premium.
-2. **Best balanced (features vs. budget)**: The sweet spot where you get most of the performance for significantly less money. Explain what you're giving up compared to the top pick and why those trade-offs are acceptable.
-3. **Best value**: The best option for someone who wants something good without spending more than necessary. Explain what makes it a smart buy at its price point.
-
-For each recommendation, explain the reasoning clearly. The reader should understand not just what you recommend but why, and be able to judge whether your reasoning applies to their situation.
-
-**What's coming next (outlook and timing)**
-This section helps the reader decide whether now is the right time to buy or whether they should wait. Research and cover:
-
-- **Upcoming products and releases** - Are any major manufacturers about to launch new models or next-generation versions? If a flagship product is due for a refresh in the next few months, the reader needs to know.
-- **Emerging technology** - Is there a meaningful technology shift on the horizon that could change the category? For example, a new type of battery chemistry, a different approach to navigation, a regulatory change that will affect available options. Explain what it is, when it's likely to arrive, and how much of a difference it would actually make.
-- **Industry trends** - Which direction is the category heading? Are prices falling? Is a particular subcategory gaining momentum while another is declining? Are there supply chain or regulatory factors that might affect availability or pricing?
-- **Buy now or wait?** - Give a clear, reasoned verdict. If there's a compelling reason to wait (e.g. a major product launch is confirmed for next quarter), say so. If the current options are strong and nothing game-changing is imminent, say that too. Be honest about the uncertainty involved - nobody can predict the future perfectly, but you can help the reader make a more informed timing decision.
-
-Search specifically for news about upcoming releases, product roadmaps, trade show announcements (CES, IFA, etc.), and industry analysis pieces. This section should feel forward-looking and practical, not speculative or vague.
-
-### 4. Format and deliver
-
-Save the completed guide as a markdown file. Use clear heading hierarchy, tables where appropriate, and keep paragraphs at a readable length.
-
-After saving the file, provide a brief summary in the conversation highlighting the key recommendations and any surprising findings from the research.
+The reader is usually on a phone, in the Claude mobile viewer, which forces its own dark background onto pages that do not declare one. The template sets `color-scheme: light only` and paints every surface explicitly so the page renders identically everywhere. Images are embedded rather than linked because retailer image URLs rotate and the guide should still work in a year. The structure and type are fixed and only the three accent colours change per category, so guides for a lawnmower and a laptop look like issues of the same magazine with different cover art, and a generated illustration sits next to a product photograph without jarring.
 
 ## Writing style
 
-- Write for a general audience. Assume the reader is intelligent but unfamiliar with the category.
-- Be direct and opinionated where the evidence supports it. "Product X is the clear leader here because..." is more useful than "Product X and Product Y both have their merits..."
-- Use UK English spelling and conventions.
-- Avoid marketing language. If a product claims to be "revolutionary", evaluate whether it actually is.
-- When you're uncertain or the evidence is mixed, say so. Honest caveats build trust.
-- Don't pad the guide with obvious filler. Every section should tell the reader something they didn't already know or help them make a better decision.
-- Never use em dashes. Use a hyphen with a space either side " - " instead.
+- Write for an intelligent reader who is new to the category. Short sentences. Verbs over nouns.
+- Be direct and opinionated where the evidence supports it: "the Halden is the one to buy because" beats "both have their merits".
+- UK English. Never use em dashes; use a hyphen with a space either side.
+- No marketing language. If a product is called revolutionary, say whether it is.
+- When the evidence is mixed, say so in one sentence and move on.
+- Every sentence should tell the reader something that changes what they buy or when.
